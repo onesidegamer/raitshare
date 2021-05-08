@@ -1,0 +1,107 @@
+apply plugin: 'com.android.application'
+def localPropertiesFile = project.rootProject.file('signing.properties')
+def useLocalSigning = localPropertiesFile.exists()
+Properties localProperties = null
+
+if (useLocalSigning) {
+    localProperties = new Properties()
+    localProperties.load(localPropertiesFile.newDataInputStream())
+}
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
+
+    defaultConfig {
+        applicationId 'com.onesidegamer.raitshare'
+        minSdkVersion 14
+        targetSdkVersion 28
+        versionCode 98
+        versionName ""
+
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            applicationIdSuffix ''
+            versionNameSuffix ''
+        }
+    }
+    flavorDimensions 'mode'
+    productFlavors {
+        RaiTShare {
+            dimension 'mode'
+
+        }
+
+    }
+}
+
+task copyHebrewResources(type: Copy) {
+
+    File mergedResourcesDir = new File("${buildDir}/mergedResources")
+
+    if (!mergedResourcesDir.isDirectory())
+        mergedResourcesDir.mkdirs()
+
+    for (String resEach : android.sourceSets.main.res.srcDirs) {
+        File currentFolder = new File(resEach)
+
+        for (File folderContents : currentFolder.listFiles()) {
+            if (folderContents.name.endsWith("-he")) {
+                String iwNamedFolder = "${folderContents.name.substring(0, folderContents.name.lastIndexOf("-he"))}-iw"
+
+                from folderContents.path
+                into "${mergedResourcesDir.path}/${iwNamedFolder}"
+                println("Copying resource ${folderContents.path}")
+            }
+        }
+    }
+
+    println("Adding merged resource directories to the resources array ${mergedResourcesDir.path}")
+    android.sourceSets.main.res.srcDirs += mergedResourcesDir.path
+}
+
+preBuild.dependsOn copyHebrewResources
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.preference:preference:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    //todo: alpha07 has changes that need to applied.
+
+    //implementation 'com.genonbeta.android:framework:1.0.2.6-local69'
+    implementation 'com.genonbeta.android:framework:1.0.2.8'
+    implementation 'com.genonbeta.android:gdatabase:1.0.2.6.1'
+    implementation 'com.genonbeta.coolsocket:main:1.0.3.1'
+
+    // 3.3.2 requires minimum Android SDK 16, so core version changes should be made in accordance
+    // with min SDK version
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'org.nanohttpd:nanohttpd:2.2.0'
+    implementation 'com.velitasali.tools.android:zxing:3.6.3'
+
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'androidx.annotation:annotation:1.0.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
+
+}

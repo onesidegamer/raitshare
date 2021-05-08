@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "200340897782",
+    "project_id": "rait-share",
+    "storage_bucket": "rait-share.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200340897782:android:f2a7815788c09ad93751d7",
+        "android_client_info": {
+          "package_name": "com.onesidegamer.raitshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200340897782-book1saddn1lp492ke37qko381kso53j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdd78yKnZSnmoqgMsputXq-365gLS16_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200340897782-book1saddn1lp492ke37qko381kso53j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
